@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import ProjectsGallery from "@/components/ProjectsGallery";
 
 export default function Home() {
   return (
@@ -55,7 +56,7 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Featured Projects Preview (Placeholder) */}
+      {/* Featured Projects Preview */}
       <section>
         <div className="flex justify-between items-end mb-8">
           <h2 className="font-serif text-3xl">Selected Projects</h2>
@@ -63,10 +64,8 @@ export default function Home() {
             View all <ArrowRight size={16} />
           </Link>
         </div>
-        <div className="p-12 text-center bg-(--color-cream-dark) rounded-2xl border border-(--color-ink)/10 border-dashed">
-          <p className="opacity-60 mb-4">Projects will be loaded from Firebase dynamically.</p>
-          <Link href="/admin" className="text-(--color-accent) hover:underline font-medium">Go to Admin Panel</Link>
-        </div>
+        
+        <ProjectsGallery limit={3} />
       </section>
     </div>
   );
