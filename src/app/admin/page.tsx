@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { addProject, uploadFile } from "@/lib/firebaseUtils";
+import { addProject } from "@/lib/firebaseUtils";
 import { Project } from "@/types/project";
 import { ArrowRight, LogOut, Loader2 } from "lucide-react";
 
@@ -20,8 +20,8 @@ export default function Admin() {
   const [tags, setTags] = useState("");
   const [externalLink, setExternalLink] = useState("");
   const [metrics, setMetrics] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [pdfUrl, setPdfUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -55,16 +55,6 @@ export default function Admin() {
     setSuccessMessage("");
     
     try {
-      let imageUrl = "";
-      let pdfUrl = "";
-
-      if (imageFile) {
-        imageUrl = await uploadFile(imageFile, "images");
-      }
-      if (pdfFile) {
-        pdfUrl = await uploadFile(pdfFile, "pdfs");
-      }
-
       const newProject: Omit<Project, 'id' | 'createdAt'> = {
         title,
         description,
@@ -84,8 +74,8 @@ export default function Admin() {
       setTags("");
       setExternalLink("");
       setMetrics("");
-      setImageFile(null);
-      setPdfFile(null);
+      setImageUrl("");
+      setPdfUrl("");
     } catch (error) {
       console.error("Error submitting project:", error);
       alert("Failed to add project. Check console for details.");
@@ -198,21 +188,23 @@ export default function Admin() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-5 mt-2">
-            <div className="p-4 border border-(--color-ink)/20 border-dashed rounded-xl bg-(--color-cream)">
-              <label className="block text-sm font-medium mb-2">Project Image</label>
+            <div>
+              <label className="block text-sm font-medium mb-1">Project Image Path (Local)</label>
               <input 
-                type="file" accept="image/*"
-                onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
-                className="text-sm w-full"
+                type="text" placeholder="/project-1.png"
+                className="w-full px-4 py-2 rounded-lg border border-(--color-ink)/20 bg-(--color-cream) focus:ring-2 focus:ring-(--color-accent) focus:outline-none"
+                value={imageUrl} onChange={(e) => setImageUrl(e.target.value)}
               />
+              <p className="text-xs opacity-60 mt-1">Place the image in the public folder.</p>
             </div>
-            <div className="p-4 border border-(--color-ink)/20 border-dashed rounded-xl bg-(--color-cream)">
-              <label className="block text-sm font-medium mb-2">PRD / Document (PDF)</label>
+            <div>
+              <label className="block text-sm font-medium mb-1">PRD / Document Link (Google Drive)</label>
               <input 
-                type="file" accept="application/pdf"
-                onChange={(e) => setPdfFile(e.target.files ? e.target.files[0] : null)}
-                className="text-sm w-full"
+                type="url" placeholder="https://drive.google.com/..."
+                className="w-full px-4 py-2 rounded-lg border border-(--color-ink)/20 bg-(--color-cream) focus:ring-2 focus:ring-(--color-accent) focus:outline-none"
+                value={pdfUrl} onChange={(e) => setPdfUrl(e.target.value)}
               />
+              <p className="text-xs opacity-60 mt-1">Paste the public Google Drive link.</p>
             </div>
           </div>
 
@@ -221,10 +213,11 @@ export default function Admin() {
             disabled={isSubmitting}
             className="mt-6 inline-flex items-center justify-center gap-2 bg-(--color-accent) text-(--color-cream) px-6 py-3 rounded-xl font-medium hover:bg-(--color-accent-dark) transition disabled:opacity-70"
           >
-            {isSubmitting ? <><Loader2 className="animate-spin" size={18} /> Uploading...</> : <><ArrowRight size={18} /> Publish Project</>}
+            {isSubmitting ? <><Loader2 className="animate-spin" size={18} /> Publishing...</> : <><ArrowRight size={18} /> Publish Project</>}
           </button>
         </form>
       </div>
     </div>
   );
 }
+

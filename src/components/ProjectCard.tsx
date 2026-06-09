@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FileText, ExternalLink } from "lucide-react";
 
 interface ProjectCardProps {
   id: string;
@@ -8,11 +8,17 @@ interface ProjectCardProps {
   tags?: string[];
   imageUrl?: string;
   metrics?: string;
+  pdfUrl?: string;
+  externalLink?: string;
 }
 
-export default function ProjectCard({ id, title, description, tags, imageUrl, metrics }: ProjectCardProps) {
+export default function ProjectCard({ id, title, description, tags, imageUrl, metrics, pdfUrl, externalLink }: ProjectCardProps) {
+  // Determine where the card links to
+  const href = pdfUrl || externalLink || "#";
+  const isExternal = !!(pdfUrl || externalLink);
+
   return (
-    <Link href={`/work/${id}`} className="block group">
+    <Link href={href} target={isExternal ? "_blank" : "_self"} rel={isExternal ? "noopener noreferrer" : ""} className="block group">
       <article className="rounded-2xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl hover:shadow-(--color-ink)/10 border border-(--color-ink)/5 bg-(--color-cream-dark)">
         {/* Image Placeholder */}
         <div className="relative aspect-[16/9] overflow-hidden bg-(--color-ink)/5 flex items-center justify-center">
@@ -49,7 +55,7 @@ export default function ProjectCard({ id, title, description, tags, imageUrl, me
           <div className="flex items-center justify-between pt-4 border-t border-(--color-ink)/10">
             <span className="text-sm font-medium text-(--color-accent-dark)">{metrics || "View Project"}</span>
             <span className="text-xs font-bold opacity-60 group-hover:opacity-100 group-hover:translate-x-1 group-hover:text-(--color-accent) transition-all duration-300 flex items-center gap-1">
-              Read <ArrowRight size={14} />
+              {pdfUrl ? <><FileText size={14} /> Read PRD</> : <><ExternalLink size={14} /> View Link</>}
             </span>
           </div>
         </div>

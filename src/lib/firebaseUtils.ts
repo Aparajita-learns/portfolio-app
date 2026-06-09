@@ -1,6 +1,5 @@
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from './firebase';
+import { db } from './firebase';
 import { Project } from '@/types/project';
 
 // COLLECTION NAME
@@ -33,19 +32,6 @@ export const addProject = async (projectData: Omit<Project, 'id' | 'createdAt'>)
     return docRef.id;
   } catch (error) {
     console.error("Error adding project: ", error);
-    throw error;
-  }
-};
-
-// Upload a file to Firebase Storage
-export const uploadFile = async (file: File, folder: string): Promise<string> => {
-  try {
-    const storageRef = ref(storage, `${folder}/${Date.now()}_${file.name}`);
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
-    return downloadURL;
-  } catch (error) {
-    console.error("Error uploading file: ", error);
     throw error;
   }
 };
