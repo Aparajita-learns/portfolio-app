@@ -3,11 +3,12 @@ import { Project } from "@/types/project";
 import Link from "next/link";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
 import { readFileSync } from "fs";
-import { join } from "path";
+import { fileURLToPath } from "url";
 
 function getProject(id: string): Project | null {
   try {
-    const filePath = join(process.cwd(), "data", "projects.json");
+    const __dirname = fileURLToPath(new URL(".", import.meta.url));
+    const filePath = require("path").join(__dirname, "..", "..", "..", "..", "data", "projects.json");
     const content = readFileSync(filePath, "utf-8");
     const projects: Project[] = JSON.parse(content);
     return projects.find((p) => p.id === id) || null;
