@@ -39,6 +39,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, id: newProject.id });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Failed to add project' }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : 'Failed to add project';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

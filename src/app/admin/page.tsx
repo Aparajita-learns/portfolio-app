@@ -180,9 +180,13 @@ export default function Admin() {
       </div>
 
       <div className="bg-(--color-cream-dark) p-8 rounded-2xl border border-(--color-ink)/10">
-        <h2 className="text-2xl font-serif mb-6 border-b border-(--color-ink)/10 pb-4">
+        <h2 className="text-2xl font-serif mb-2 border-b border-(--color-ink)/10 pb-4">
           Add New Project
         </h2>
+        <p className="text-xs opacity-60 mb-6">
+          Requires a GitHub token with <strong>Contents: Read and write</strong> on this repo
+          (not Actions or Deployments). Set <code className="text-[11px]">GITHUB_TOKEN</code> in Vercel.
+        </p>
 
         {successMessage && (
           <div className="mb-6 p-4 bg-green-50 text-green-800 rounded-lg border border-green-200 text-sm">
