@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { Project } from "@/types/project";
-import { ArrowRight, Loader2, LogOut, Lock } from "lucide-react";
+import { ArrowRight, Loader2, LogOut, Lock, Pencil, Trash2, X } from "lucide-react";
 
 export default function Admin() {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   // Login state
   const [password, setPassword] = useState("");
@@ -24,13 +25,25 @@ export default function Admin() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   // On mount, check if a token is already stored
   useEffect(() => {
     const stored = localStorage.getItem("adminToken");
     if (stored) setToken(stored);
     setLoading(false);
+    fetchProjects();
   }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch("/api/projects");
+      if (res.ok) {
+        const data = await res.json();
+        setProjects(data);
+      }
+    } catch {}
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +75,33 @@ export default function Admin() {
     setToken(null);
   };
 
-  const handleAddProject = async (e: React.FormEvent) => {
+  const handleEdit = (project: Project) => {
+    setEditingProject(project);
+    setTitle(project.title);
+    setDescription(project.description);
+    setTags(project.tags?.join(", ") || "");
+    setExternalLink(project.externalLink || "");
+    setMetrics(project.metrics || "");
+    setImageUrl(project.imageUrl || "");
+    setPdfUrl(project.pdfUrl || "");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProject(null);
+    clearForm();
+  };
+
+  const clearForm = () => {
+    setTitle("");
+    setDescription("");
+    setTags("");
+    setExternalLink("");
+    setMetrics("");
+    setImageUrl("");
+    setPdfUrl("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !description) return;
 
@@ -71,45 +110,90 @@ export default function Admin() {
     setErrorMessage("");
 
     try {
-      const newProject: Omit<Project, "id" | "createdAt"> = {
-        title,
-        description,
-        tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
-        externalLink,
-        metrics,
-        imageUrl,
-        pdfUrl,
-      };
+      if (editingProject) {
+        const res = await fetch("/api/projects", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            id: editingProject.id,
+            title,
+            description,
+            tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
+            externalLink,
+            metrics,
+            imageUrl,
+            pdfUrl,
+          }),
+        });
 
-      const res = await fetch("/api/projects", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newProject),
-      });
-
-      if (res.ok) {
-        setSuccessMessage(
-          "✅ Project published! Your site will update in ~30–60 seconds as Vercel rebuilds."
-        );
-        setTitle("");
-        setDescription("");
-        setTags("");
-        setExternalLink("");
-        setMetrics("");
-        setImageUrl("");
-        setPdfUrl("");
+        if (res.ok) {
+          setSuccessMessage("✅ Project updated! Your site will update in ~60 seconds.");
+          setEditingProject(null);
+          clearForm();
+          fetchProjects();
+        } else {
+          const err = await res.json();
+          setErrorMessage(err.error || "Failed to update project.");
+        }
       } else {
-        const err = await res.json();
-        setErrorMessage(err.error || "Failed to publish project.");
+        const newProject: Omit<Project, "id" | "createdAt"> = {
+          title,
+          description,
+          tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
+          externalLink,
+          metrics,
+          imageUrl,
+          pdfUrl,
+        };
+
+        const res = await fetch("/api/projects", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newProject),
+        });
+
+        if (res.ok) {
+          setSuccessMessage(
+            "✅ Project published! Your site will update in ~30–60 seconds as Vercel rebuilds."
+          );
+          clearForm();
+          fetchProjects();
+        } else {
+          const err = await res.json();
+          setErrorMessage(err.error || "Failed to publish project.");
+        }
       }
     } catch {
       setErrorMessage("Something went wrong. Check your connection.");
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleDelete = async (id: string, title: string) => {
+    if (!confirm(`Delete "${title}"?`)) return;
+
+    try {
+      const res = await fetch("/api/projects", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (res.ok) {
+        setSuccessMessage("✅ Project deleted.");
+        fetchProjects();
+      }
+    } catch {}
   };
 
   if (loading) {
@@ -169,7 +253,7 @@ export default function Admin() {
       <div className="flex justify-between items-center mb-10">
         <div>
           <h1 className="font-serif text-4xl">Dashboard</h1>
-          <p className="text-sm opacity-60 mt-1">Add a project → it goes live in ~60 seconds</p>
+          <p className="text-sm opacity-60 mt-1">Manage your projects</p>
         </div>
         <button
           onClick={handleLogout}
@@ -179,9 +263,47 @@ export default function Admin() {
         </button>
       </div>
 
+      {/* Projects List */}
+      {projects.length > 0 && (
+        <div className="mb-12">
+          <h2 className="text-xl font-serif mb-4">Existing Projects</h2>
+          <div className="space-y-3">
+            {projects.map((project) => (
+              <div key={project.id} className="flex items-center justify-between p-4 bg-(--color-cream-dark) rounded-lg border border-(--color-ink)/10">
+                <span className="font-medium">{project.title}</span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEdit(project)}
+                    className="p-2 text-(--color-accent) hover:bg-(--color-accent)/10 rounded"
+                    title="Edit"
+                  >
+                    <Pencil size={16} />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(project.id!, project.title)}
+                    className="p-2 text-red-600 hover:bg-red-50 rounded"
+                    title="Delete"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="bg-(--color-cream-dark) p-8 rounded-2xl border border-(--color-ink)/10">
-        <h2 className="text-2xl font-serif mb-2 border-b border-(--color-ink)/10 pb-4">
-          Add New Project
+        <h2 className="text-2xl font-serif mb-2 border-b border-(--color-ink)/10 pb-4 flex items-center justify-between">
+          {editingProject ? "Edit Project" : "Add New Project"}
+          {editingProject && (
+            <button
+              onClick={handleCancelEdit}
+              className="p-1 text-(--color-ink)/50 hover:text-(--color-ink)"
+            >
+              <X size={18} />
+            </button>
+          )}
         </h2>
         <p className="text-xs opacity-60 mb-6">
           Requires a GitHub token with <strong>Contents: Read and write</strong> on this repo
@@ -199,7 +321,7 @@ export default function Admin() {
           </div>
         )}
 
-        <form onSubmit={handleAddProject} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div>
             <label className="block text-sm font-medium mb-1">Project Title *</label>
             <input
@@ -294,11 +416,11 @@ export default function Admin() {
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="animate-spin" size={18} /> Publishing to GitHub...
+                <Loader2 className="animate-spin" size={18} /> Saving...
               </>
             ) : (
               <>
-                <ArrowRight size={18} /> Publish Project
+                <ArrowRight size={18} /> {editingProject ? "Update Project" : "Publish Project"}
               </>
             )}
           </button>

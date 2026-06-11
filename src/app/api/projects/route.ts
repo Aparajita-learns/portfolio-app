@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     };
 
     const { projects } = await getProjectsFile();
-    projects.unshift(newProject); // newest first
+    projects.unshift(newProject);
 
     await updateProjectsFile(projects, `feat: add project "${newProject.title}"`);
 
@@ -41,6 +41,78 @@ export async function POST(request: NextRequest) {
     console.error(error);
     const message =
       error instanceof Error ? error.message : 'Failed to add project';
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+// PUT — update an existing project
+export async function PUT(request: NextRequest) {
+  const authHeader = request.headers.get('Authorization');
+  const token = authHeader?.replace('Bearer ', '');
+
+  if (!token || token !== process.env.ADMIN_TOKEN) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const { id, ...updateData } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
+    }
+
+    const { projects } = await getProjectsFile();
+    const index = projects.findIndex((p: Project) => p.id === id);
+
+    if (index === -1) {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    }
+
+    projects[index] = { ...projects[index], ...updateData };
+    await updateProjectsFile(projects, `chore: update project "${projects[index].title}"`);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    const message =
+      error instanceof Error ? error.message : 'Failed to update project';
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+// DELETE — delete a project
+export async function DELETE(request: NextRequest) {
+  const authHeader = request.headers.get('Authorization');
+  const token = authHeader?.replace('Bearer ', '');
+
+  if (!token || token !== process.env.ADMIN_TOKEN) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const { id } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
+    }
+
+    const { projects } = await getProjectsFile();
+    const index = projects.findIndex((p: Project) => p.id === id);
+
+    if (index === -1) {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    }
+
+    const removed = projects.splice(index, 1);
+    await updateProjectsFile(projects, `chore: delete project "${removed[0].title}"`);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    const message =
+      error instanceof Error ? error.message : 'Failed to delete project';
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
