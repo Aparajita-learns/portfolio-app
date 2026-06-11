@@ -2,12 +2,18 @@ import { notFound } from "next/navigation";
 import { Project } from "@/types/project";
 import Link from "next/link";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
-
-import projectsRaw from "../../../../data/projects.json";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 function getProject(id: string): Project | null {
-  const projects = projectsRaw as Project[];
-  return projects.find((p) => p.id === id) || null;
+  try {
+    const filePath = join(process.cwd(), "data", "projects.json");
+    const content = readFileSync(filePath, "utf-8");
+    const projects: Project[] = JSON.parse(content);
+    return projects.find((p) => p.id === id) || null;
+  } catch {
+    return null;
+  }
 }
 
 export default function ProjectPage({ params }: { params: { id: string } }) {
