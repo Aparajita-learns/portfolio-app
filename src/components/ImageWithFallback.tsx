@@ -13,9 +13,7 @@ export function ImageWithFallback({ src, alt, className, containerClassName }: I
 
   if (!src || hasError) {
     return (
-      <div className={containerClassName || "w-full h-full bg-(--color-ink)/5 flex items-center justify-center"}>
-        <span className="text-(--color-ink)/30 font-medium">No Image</span>
-      </div>
+      <div className={containerClassName || "w-full h-full bg-(--color-ink)/5"} />
     );
   }
 

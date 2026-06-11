@@ -3,35 +3,15 @@ import { Project } from "@/types/project";
 import Link from "next/link";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
 
-const GITHUB_OWNER = process.env.GITHUB_OWNER || "Aparajita-learns";
-const GITHUB_REPO = process.env.GITHUB_REPO || "portfolio-app";
-const FILE_PATH = "data/projects.json";
-const GITHUB_BRANCH = process.env.GITHUB_BRANCH || "main";
+import projectsRaw from "../../../../data/projects.json";
 
-async function getProject(id: string): Promise<Project | null> {
-  try {
-    const GITHUB_API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${FILE_PATH}`;
-    const response = await fetch(`${GITHUB_API_BASE}?ref=${GITHUB_BRANCH}`, {
-      headers: {
-        Accept: "application/vnd.github.v3+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-      cache: "no-store",
-    });
-
-    if (!response.ok) return null;
-
-    const data = await response.json();
-    const decoded = Buffer.from(data.content, "base64").toString("utf-8");
-    const projects: Project[] = JSON.parse(decoded);
-    return projects.find((p) => p.id === id) || null;
-  } catch {
-    return null;
-  }
+function getProject(id: string): Project | null {
+  const projects = projectsRaw as Project[];
+  return projects.find((p) => p.id === id) || null;
 }
 
-export default async function ProjectPage({ params }: { params: { id: string } }) {
-  const project = await getProject(params.id);
+export default function ProjectPage({ params }: { params: { id: string } }) {
+  const project = getProject(params.id);
 
   if (!project) {
     notFound();
