@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "title": "Football Data Analysis using SQL",
+    "description": "Much like the \"Moneyball\" scenario where baseball data was analyzed to make better player decisions, I used SQL queries to extract insights from a dataset of football players, teams, and their performance statistics. \nGoal was to help a football team’s management find patterns that can be used to make strategic decisions.",
+    "tags": [
+      "SQL",
+      "Data Visualization",
+      "Data Analysis"
+    ],
+    "externalLink": "",
+    "metrics": "",
+    "imageUrl": "https://drive.google.com/file/d/14kCQeSvS8MvASTHvCc68MaRY02lsbAtp/view?usp=drive_link",
+    "pdfUrl": "https://drive.google.com/file/d/1SZna_AGrRQ44hVcNxA6x-QFpSi5FL0si/view?usp=drive_link",
+    "id": "1781167337662",
+    "createdAt": 1781167337662
+  }
+]
