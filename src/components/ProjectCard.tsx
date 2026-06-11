@@ -1,5 +1,7 @@
+"use client";
 import Link from "next/link";
-import { ArrowRight, FileText, ExternalLink } from "lucide-react";
+import { FileText, ExternalLink } from "lucide-react";
+import { ImageWithFallback } from "./ImageWithFallback";
 
 interface ProjectCardProps {
   id: string;
@@ -13,24 +15,16 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ id, title, description, tags, imageUrl, metrics, pdfUrl, externalLink }: ProjectCardProps) {
-  // Determine where the card links to
-  const href = pdfUrl || externalLink || "#";
-  const isExternal = !!(pdfUrl || externalLink);
+  // Determine where the card links to - use detail page if id exists, otherwise external link
+  const href = id ? `/work/${id}` : (pdfUrl || externalLink || "#");
+  const isExternal = !id && !!(pdfUrl || externalLink);
 
   return (
     <Link href={href} target={isExternal ? "_blank" : "_self"} rel={isExternal ? "noopener noreferrer" : ""} className="block group">
       <article className="rounded-2xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl hover:shadow-(--color-ink)/10 border border-(--color-ink)/5 bg-(--color-cream-dark)">
         {/* Image Placeholder */}
         <div className="relative aspect-[16/9] overflow-hidden bg-(--color-ink)/5 flex items-center justify-center">
-          {imageUrl ? (
-            <img 
-              src={imageUrl} 
-              alt={title} 
-              className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105" 
-            />
-          ) : (
-            <span className="text-(--color-ink)/30 font-medium">No Image</span>
-          )}
+          <ImageWithFallback src={imageUrl} alt={title} />
         </div>
         
         {/* Content */}
@@ -53,9 +47,9 @@ export default function ProjectCard({ id, title, description, tags, imageUrl, me
           <p className="text-sm opacity-80 leading-relaxed mb-4 line-clamp-2">{description}</p>
           
           <div className="flex items-center justify-between pt-4 border-t border-(--color-ink)/10">
-            <span className="text-sm font-medium text-(--color-accent-dark)">{metrics || "View Project"}</span>
+            <span className="text-sm font-medium text-(--color-accent-dark)">{metrics || (id ? "View Project" : "")}</span>
             <span className="text-xs font-bold opacity-60 group-hover:opacity-100 group-hover:translate-x-1 group-hover:text-(--color-accent) transition-all duration-300 flex items-center gap-1">
-              {pdfUrl ? <><FileText size={14} /> Read PRD</> : <><ExternalLink size={14} /> View Link</>}
+              {pdfUrl ? <><FileText size={14} /> Read the document</> : <><ExternalLink size={14} /> View Link</>}
             </span>
           </div>
         </div>

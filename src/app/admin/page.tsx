@@ -273,7 +273,7 @@ export default function Admin() {
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">PRD / Doc Link (Google Drive)</label>
+              <label className="block text-sm font-medium mb-1">Document Link (Google Drive)</label>
               <input
                 type="url"
                 placeholder="https://drive.google.com/..."
