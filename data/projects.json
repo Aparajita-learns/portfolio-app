@@ -1,5 +1,20 @@
 [
   {
+    "title": "PRD for resolving Zepto's ETA Reliability issue",
+    "description": "Urban Zepto users ordering during peak demand windows are experiencing delivery times that significantly exceed the ETA shown in the app. The visible issue is not only that orders are late, but that the app continues to display aggressive short ETAs that users no longer trust.\n\nRead my analysis and recommendations in this short PRD.",
+    "tags": [
+      "PRD",
+      "RCA",
+      "Issue Deep Dive"
+    ],
+    "externalLink": "",
+    "metrics": "",
+    "imageUrl": "public/Zepto Thumbnail.png",
+    "pdfUrl": "https://drive.google.com/file/d/1E7Ek9tVlPRx0uAmuBtFgspgrkq54nSp8/view?usp=drive_link",
+    "id": "1781250872957",
+    "createdAt": 1781250872957
+  },
+  {
     "title": "Football Data Analysis using SQL",
     "description": "Much like the \"Moneyball\" scenario where baseball data was analyzed to make better player decisions, I used SQL queries to extract insights from a dataset of football players, teams, and their performance statistics. \nGoal was to help a football team’s management find patterns that can be used to make strategic decisions.",
     "tags": [
