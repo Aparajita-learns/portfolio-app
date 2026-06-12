@@ -32,9 +32,7 @@ export default function ProjectsGallery({ limit }: Props) {
           description={project.description}
           tags={project.tags}
           imageUrl={project.imageUrl}
-          metrics={project.metrics}
           pdfUrl={project.pdfUrl}
-          externalLink={project.externalLink}
         />
       ))}
     </div>

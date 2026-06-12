@@ -9,12 +9,10 @@ interface ProjectCardProps {
   description: string;
   tags?: string[];
   imageUrl?: string;
-  metrics?: string;
   pdfUrl?: string;
-  externalLink?: string;
 }
 
-export default function ProjectCard({ id, title, description, tags, imageUrl, metrics, pdfUrl, externalLink }: ProjectCardProps) {
+export default function ProjectCard({ id, title, description, tags, imageUrl, pdfUrl }: ProjectCardProps) {
   return (
     <article className="rounded-2xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl hover:shadow-(--color-ink)/10 border border-(--color-ink)/5 bg-(--color-cream-dark)">
       {/* Image Placeholder */}
@@ -41,12 +39,12 @@ export default function ProjectCard({ id, title, description, tags, imageUrl, me
         <h3 className="font-serif text-2xl leading-snug mb-2 group-hover:text-(--color-accent) transition-colors">{title}</h3>
         <p className="text-sm opacity-80 leading-relaxed mb-4 line-clamp-2">{description}</p>
         
-        <div className="flex items-center justify-between pt-4 border-t border-(--color-ink)/10">
+        <div className="flex justify-end items-center gap-4 pt-4 border-t border-(--color-ink)/10">
           <Link 
             href={`/work/${id}`}
-            className="text-sm font-medium text-(--color-accent-dark) hover:underline"
+            className="text-xs font-bold opacity-60 hover:opacity-100 hover:text-(--color-accent) transition-all duration-300 flex items-center gap-1"
           >
-            {metrics || "View Project"}
+            View Project
           </Link>
           {pdfUrl && (
             <a

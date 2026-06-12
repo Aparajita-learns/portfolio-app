@@ -2,23 +2,17 @@ import { notFound } from "next/navigation";
 import { Project } from "@/types/project";
 import Link from "next/link";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
-import { readFileSync } from "fs";
-import { fileURLToPath } from "url";
+import projectsRaw from "../../../../data/projects.json";
+
+const projects = projectsRaw as Project[];
 
 function getProject(id: string): Project | null {
-  try {
-    const __dirname = fileURLToPath(new URL(".", import.meta.url));
-    const filePath = require("path").join(__dirname, "..", "..", "..", "..", "data", "projects.json");
-    const content = readFileSync(filePath, "utf-8");
-    const projects: Project[] = JSON.parse(content);
-    return projects.find((p) => p.id === id) || null;
-  } catch {
-    return null;
-  }
+  return projects.find((p) => p.id === id) || null;
 }
 
-export default function ProjectPage({ params }: { params: { id: string } }) {
-  const project = getProject(params.id);
+export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const project = getProject(id);
 
   if (!project) {
     notFound();
