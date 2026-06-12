@@ -1,18 +1,12 @@
 import { notFound } from "next/navigation";
-import { Project } from "@/types/project";
+import { getProjects } from "@/lib/projects";
 import Link from "next/link";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
-import projectsRaw from "../../../../data/projects.json";
-
-const projects = projectsRaw as Project[];
-
-function getProject(id: string): Project | null {
-  return projects.find((p) => p.id === id) || null;
-}
 
 export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const project = getProject(id);
+  const projects = await getProjects();
+  const project = projects.find((p) => p.id === id) || null;
 
   if (!project) {
     notFound();

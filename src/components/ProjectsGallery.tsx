@@ -1,5 +1,4 @@
-import projectsRaw from '../../data/projects.json';
-import { Project } from '@/types/project';
+import { getProjects } from '@/lib/projects';
 import ProjectCard from './ProjectCard';
 import Link from 'next/link';
 
@@ -7,8 +6,8 @@ interface Props {
   limit?: number;
 }
 
-export default function ProjectsGallery({ limit }: Props) {
-  const all = projectsRaw as Project[];
+export default async function ProjectsGallery({ limit }: Props) {
+  const all = await getProjects();
   const projects = limit ? all.slice(0, limit) : all;
 
   if (projects.length === 0) {
