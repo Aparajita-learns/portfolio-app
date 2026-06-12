@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Project } from "@/types/project";
-import { ArrowRight, Loader2, LogOut, Lock, Pencil, Trash2, X } from "lucide-react";
+import { ArrowRight, Loader2, LogOut, Lock, Pencil, Plus, Trash2, X } from "lucide-react";
 
 export default function Admin() {
   const [token, setToken] = useState<string | null>(null);
@@ -27,15 +27,7 @@ export default function Admin() {
   const [errorMessage, setErrorMessage] = useState("");
   const [editingProject, setEditingProject] = useState<Project | null>(null);
 
-  // On mount, check if a token is already stored
-  useEffect(() => {
-    const stored = localStorage.getItem("adminToken");
-    if (stored) setToken(stored);
-    setLoading(false);
-    fetchProjects();
-  }, []);
-
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     try {
       const res = await fetch("/api/projects");
       if (res.ok) {
@@ -43,7 +35,20 @@ export default function Admin() {
         setProjects(data);
       }
     } catch {}
-  };
+    finally {
+      setLoading(false);
+    }
+  }, [setLoading]);
+
+  // On mount, check if a token is already stored
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const stored = localStorage.getItem("adminToken");
+      if (stored) setToken(stored);
+      fetchProjects();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchProjects]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,6 +104,13 @@ export default function Admin() {
     setMetrics("");
     setImageUrl("");
     setPdfUrl("");
+  };
+
+  const handleAddProject = () => {
+    setEditingProject(null);
+    clearForm();
+    setSuccessMessage("");
+    setErrorMessage("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -250,17 +262,26 @@ export default function Admin() {
   // — DASHBOARD —
   return (
     <div className="mx-auto max-w-4xl px-6 pt-16 pb-24">
-      <div className="flex justify-between items-center mb-10">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
         <div>
           <h1 className="font-serif text-4xl">Dashboard</h1>
           <p className="text-sm opacity-60 mt-1">Manage your projects</p>
         </div>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 text-sm text-(--color-ink)/70 hover:text-(--color-ink) transition"
-        >
-          <LogOut size={16} /> Logout
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleAddProject}
+            className="flex items-center gap-2 bg-(--color-accent) text-(--color-cream) px-4 py-2 rounded-xl text-sm font-medium hover:bg-(--color-accent-dark) transition"
+          >
+            <Plus size={16} /> Add Project
+          </button>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-sm text-(--color-ink)/70 hover:text-(--color-ink) transition px-3 py-2"
+          >
+            <LogOut size={16} /> Logout
+          </button>
+        </div>
       </div>
 
       {/* Projects List */}
@@ -404,7 +425,7 @@ export default function Admin() {
                 onChange={(e) => setPdfUrl(e.target.value)}
               />
               <p className="text-xs opacity-50 mt-1">
-                Share the file as "Anyone with the link can view" in Google Drive.
+                Share the file as &quot;Anyone with the link can view&quot; in Google Drive.
               </p>
             </div>
           </div>
