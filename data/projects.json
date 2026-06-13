@@ -1,5 +1,21 @@
 [
   {
+    "title": "RAG | Compliance-first Mutual Fund FAQ Assistant",
+    "description": "Shipped an AI prototype of a compliance-first Mutual Fund FAQ Assistant that leverages RAG to provide factual answers from official HDFC Mutual Fund documents. Built with privacy-first guardrails, intent classification, and PII redaction to prevent hallucinations, investment advice, and misuse of sensitive data.\nPlease note: Assistant is deployed on a free tier, when you use it, let that sleepyhead wake up in 30-40 seconds! ;)",
+    "tags": [
+      "AI Prototype",
+      "RAG",
+      "Fintech",
+      "FAQ Assistant"
+    ],
+    "externalLink": "https://rag-faq-bot.vercel.app/",
+    "metrics": "",
+    "imageUrl": "public/MFthumbnail.png",
+    "pdfUrl": "",
+    "id": "1781357162703",
+    "createdAt": 1781357162703
+  },
+  {
     "title": "n8n onboarding - A Product Teardown",
     "description": "n8n is one of the fastest-growing workflow automation platforms, combining visual workflows, AI orchestration, and developer-level flexibility. In this teardown, we’ll analyze how its onboarding experience helps users reach first value and where it can further simplify the path from curiosity to adoption.",
     "tags": [
