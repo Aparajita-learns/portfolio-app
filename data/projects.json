@@ -1,5 +1,20 @@
 [
   {
+    "title": "Case study on ChatGPT's voice input usage ",
+    "description": "This is a case study with insights on why users are not using Voice input on ChatGPT mobile, \nespecially in India.",
+    "tags": [
+      "Case study",
+      "User research",
+      "Pain points"
+    ],
+    "externalLink": "",
+    "metrics": "",
+    "imageUrl": "public/ChatGPTthumbnail.png",
+    "pdfUrl": "https://drive.google.com/file/d/1zzEmoiEtDHUPZlVCG7P7knXYOrmQpiXl/view?usp=drive_link",
+    "id": "1781348998610",
+    "createdAt": 1781348998610
+  },
+  {
     "title": "PRD for resolving Zepto's ETA Reliability issue",
     "description": "Urban Zepto users ordering during peak demand windows are experiencing delivery times that significantly exceed the ETA shown in the app. The visible issue is not only that orders are late, but that the app continues to display aggressive short ETAs that users no longer trust.\n\nRead my analysis and recommendations in this short PRD.",
     "tags": [
