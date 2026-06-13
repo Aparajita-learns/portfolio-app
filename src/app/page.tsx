@@ -19,7 +19,7 @@ export default function Home() {
           Crafting <span className="italic text-(--color-accent)">elegant</span> solutions to complex problems.
         </h1>
         <p className="text-lg opacity-80 max-w-2xl mb-10 leading-relaxed">
-          Product Manager specializing in building intuitive, data-driven applications that bridge the gap between user needs and business goals.
+          A product manager who thrives at the intersection of user empathy, intuitive experiences, AI, and execution—using data to uncover user pain points, validating opportunities with evidence, and building products that feel effortless while delivering meaningful impact.
         </p>
         
         <div className="flex gap-4">
@@ -56,16 +56,15 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Featured Projects Preview */}
+      {/* All Projects */}
       <section>
-        <div className="flex justify-between items-end mb-8">
-          <h2 className="font-serif text-3xl">Selected Projects</h2>
-          <Link href="/work" className="text-sm font-medium hover:text-(--color-accent) flex items-center gap-1 transition-colors">
-            View all <ArrowRight size={16} />
-          </Link>
+        <div className="flex items-center gap-4 mb-10">
+          <div className="h-px flex-1 bg-(--color-ink)/10"></div>
+          <span className="text-sm font-bold tracking-widest uppercase opacity-50">My Projects</span>
+          <div className="h-px flex-1 bg-(--color-ink)/10"></div>
         </div>
         
-        <ProjectsGallery limit={3} />
+        <ProjectsGallery />
       </section>
     </div>
   );
