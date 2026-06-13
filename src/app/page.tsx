@@ -40,18 +40,26 @@ export default function Home() {
           <div className="h-px flex-1 bg-(--color-ink)/10"></div>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-(--color-cream-dark) p-8 rounded-2xl border border-(--color-ink)/5 hover:-translate-y-2 transition-transform duration-300">
+        <div className="flex overflow-x-auto gap-6 pb-6 custom-scrollbar scroll-smooth snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0">
+          <div className="snap-start w-[280px] md:w-[320px] flex-shrink-0 bg-(--color-cream-dark) p-8 rounded-2xl border border-(--color-ink)/5 hover:-translate-y-2 transition-transform duration-300">
             <h3 className="font-serif text-2xl mb-3">Product Strategy</h3>
             <p className="opacity-75 text-sm leading-relaxed">Aligning market opportunities with business capabilities to define winning roadmaps.</p>
           </div>
-          <div className="bg-(--color-dark) text-(--color-cream) p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+          <div className="snap-start w-[280px] md:w-[320px] flex-shrink-0 bg-(--color-dark) text-(--color-cream) p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
             <h3 className="font-serif text-2xl mb-3">User Research</h3>
             <p className="opacity-80 text-sm leading-relaxed">Uncovering the signal in the noise through deep empathy and quantitative analysis.</p>
           </div>
-          <div className="bg-(--color-peach) p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+          <div className="snap-start w-[280px] md:w-[320px] flex-shrink-0 bg-(--color-peach) p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
             <h3 className="font-serif text-2xl mb-3 text-(--color-dark)">Execution</h3>
             <p className="text-(--color-dark)/80 text-sm leading-relaxed">Shipping high-quality features quickly, tracking metrics, and iterating to success.</p>
+          </div>
+          <div className="snap-start w-[280px] md:w-[320px] flex-shrink-0 bg-(--color-cream-dark) p-8 rounded-2xl border border-(--color-ink)/5 hover:-translate-y-2 transition-transform duration-300">
+            <h3 className="font-serif text-2xl mb-3">AI Prototyping</h3>
+            <p className="opacity-75 text-sm leading-relaxed">Rapidly building and validating MVPs with AI-powered tools and workflows.</p>
+          </div>
+          <div className="snap-start w-[280px] md:w-[320px] flex-shrink-0 bg-(--color-dark) text-(--color-cream) p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+            <h3 className="font-serif text-2xl mb-3">AI-Augmented Product Work</h3>
+            <p className="opacity-80 text-sm leading-relaxed">Leveraging AI to accelerate research, documentation, prioritization, and stakeholder communication.</p>
           </div>
         </div>
       </section>
