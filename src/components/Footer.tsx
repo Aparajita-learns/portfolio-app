@@ -1,4 +1,4 @@
-import { Mail } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -9,6 +9,7 @@ export default function Footer() {
           <a href="https://www.linkedin.com/in/aparajita-gupta-1a35031a9/" target="_blank" rel="noopener noreferrer" className="hover:text-(--color-peach) transition">LinkedIn</a>
           <a href="https://github.com/Aparajita-learns" target="_blank" rel="noopener noreferrer" className="hover:text-(--color-peach) transition">GitHub</a>
           <a href="mailto:aparajita2407@gmail.com" className="hover:text-(--color-peach) transition flex items-center gap-1"><Mail size={16} /> Email</a>
+          <a href="tel:+918840976918" className="hover:text-(--color-peach) transition flex items-center gap-1"><Phone size={16} /> +91-8840976918</a>
         </div>
       </div>
     </footer>
