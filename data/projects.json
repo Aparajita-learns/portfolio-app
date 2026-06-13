@@ -1,5 +1,20 @@
 [
   {
+    "title": "n8n onboarding - A Product Teardown",
+    "description": "n8n is one of the fastest-growing workflow automation platforms, combining visual workflows, AI orchestration, and developer-level flexibility. In this teardown, we’ll analyze how its onboarding experience helps users reach first value and where it can further simplify the path from curiosity to adoption.",
+    "tags": [
+      "product teardown",
+      "product strategy",
+      "user journey"
+    ],
+    "externalLink": "",
+    "metrics": "",
+    "imageUrl": "public/n8nthumbnail.png",
+    "pdfUrl": "https://docs.google.com/presentation/d/1GvB1qFaQvifFnO6o4xRrfwh7gziyjVJt/edit?usp=drive_link&ouid=100566015563842716737&rtpof=true&sd=true",
+    "id": "1781350916033",
+    "createdAt": 1781350916033
+  },
+  {
     "title": "Case study on ChatGPT's voice input usage ",
     "description": "This is a case study with insights on why users are not using Voice input on ChatGPT mobile, \nespecially in India.",
     "tags": [
