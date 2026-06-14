@@ -19,7 +19,7 @@ export default function Home() {
           Crafting <span className="italic text-(--color-accent)">elegant</span> solutions to complex problems.
         </h1>
         <p className="text-lg opacity-80 max-w-2xl mb-10 leading-relaxed">
-          A product manager who thrives at the intersection of user empathy, intuitive experiences, AI, and execution—using data to uncover user pain points, validating opportunities with evidence, and building products that feel effortless while delivering meaningful impact.
+          Product thinker turning real-world customer pain points into intuitive, AI-powered user experiences—backed by Microsoft App Service experience.
         </p>
         
         <div className="flex gap-4">

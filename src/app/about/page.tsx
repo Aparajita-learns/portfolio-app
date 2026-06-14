@@ -7,10 +7,13 @@ export default function About() {
         {/* Text Section */}
         <div className="space-y-6" style={{ fontFamily: '"Segoe UI", system-ui, sans-serif' }}>
           <p className="opacity-90 leading-relaxed text-lg italic">
-            I am a product management professional with a strong foundation in engineering, customer problem-solving, and cross-functional collaboration. Over 9+ years, I have worked closely with enterprise customers, support organizations, and engineering teams to uncover pain points, influence product improvements, and deliver measurable outcomes.
+            Shaped by hands-on experience working on Azure App Service at Microsoft, I’ve spent my time close to real customer problems—collaborating with enterprise users, support teams, and engineers to uncover pain points, influence product improvements, and drive meaningful outcomes.
           </p>
           <p className="opacity-90 leading-relaxed text-lg italic">
-            Combining deep technical expertise with structured PM training through the NextLeap Product Management Fellowship, I am passionate about building intuitive, AI-powered products that solve real user problems and create lasting business value.
+            With a strong engineering foundation and structured product thinking from the NextLeap Product Management Fellowship, I enjoy building intuitive, AI-powered experiences that solve real problems and create lasting value—often experimenting with ideas through small AI prototypes and hands-on builds.
+          </p>
+          <p className="opacity-90 leading-relaxed text-lg italic">
+            Outside of that, I enjoy spending time caring for animals—something that keeps me grounded and constantly reminds me to approach problems with empathy.
           </p>
         </div>
         
