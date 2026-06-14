@@ -7,13 +7,20 @@ export default function Home() {
     <div className="mx-auto max-w-4xl px-6 pt-20 pb-12">
       {/* Hero Section */}
       <section className="mb-24">
-        <div className="inline-flex items-center gap-2 rounded-full bg-(--color-cream-dark) px-4 py-2 mb-8 border border-(--color-ink)/10">
+        <a 
+          href={process.env.NEXT_PUBLIC_RESUME_URL || "/resume.pdf"} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="inline-flex items-center gap-2 rounded-full bg-(--color-cream-dark) px-4 py-2 mb-8 border border-(--color-ink)/10 hover:bg-(--color-cream-dark)/80 hover:border-(--color-accent)/30 transition-all hover:-translate-y-0.5 group cursor-pointer"
+        >
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--color-success) opacity-75"></span>
             <span className="relative inline-flex h-2 w-2 rounded-full bg-(--color-success)"></span>
           </span>
-          <span className="text-xs font-medium tracking-wide">Available for new opportunities</span>
-        </div>
+          <span className="text-xs font-medium tracking-wide group-hover:text-(--color-accent) transition-colors">
+            Available for new opportunities - Explore my resume
+          </span>
+        </a>
         
         <h1 className="font-serif text-5xl md:text-7xl leading-tight tracking-tight mb-6">
           Crafting <span className="italic text-(--color-accent)">elegant</span> solutions to complex problems.
